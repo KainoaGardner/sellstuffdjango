@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block header %}Home{% endblock %}
+{% block content %}
+
+
+
+<form action="addItem" method="post">
+  {% csrf_token %}
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" placeholder="Enter a Title" required>
+  <label for="desc">Description</label>
+  <input type="text" id="desc" name="desc" placeholder="Enter a Description">
+  <label for="price">Price</label>
+  <input type="number" id="price" name="price" placeholder="Enter a Price" required>
+  <label for="sold">Sold</label>
+  <input type="checkbox" id="sold" name="sold">
+  <input type="submit" id="submit" name="submit" value="Add">
+
+</form>
+<ul>
+  {% for item in items %}
+  <li>
+    <h2>{{item.title}}</h2>
+    <p>{{item.description}}</p>
+    <p>{{item.price}}</p>
+    {% if item.sold %}
+    <p>Sold</p>
+    {% else %}
+    <p>Not Sold</p>
+    {% endif %}
+
+    <form method="post" action="toggleSold/{{item.id}}/" +>
+      {% csrf_token %}
+      <input type="submit" value="Sold"></input>
+    </form>
+
+    <form method="post" action="deleteItem/{{item.id}}/" +>
+      {% csrf_token %}
+      <input type="submit" value="Delete"></input>
+    </form>
+
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
